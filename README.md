@@ -19,3 +19,21 @@ npm run build --report
 ```
 
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+
+### 从一个 todoList 入手学习 vue
+```bash
+三个组件
+  todo.vue: 
+            input
+            item
+            tabs
+  item.vue: 
+            todo-item:
+                      checkbox
+                      text
+                      delete
+  tabs.vue:
+            items
+            buttons
+            clear
+ ```
