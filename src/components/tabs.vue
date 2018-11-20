@@ -46,7 +46,7 @@ export default {
   },
   methods:{
     toggleStatus(status){
-      this.$emit('toggle',status)
+      this.$emit('toggleStatus',status)
     },
     deleteItem(){
       this.$emit('clear')

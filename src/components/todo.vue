@@ -1,95 +1,151 @@
 <template>
   <div class="todo-main">
       <!-- 介绍 v-model 属性 -->
-      <el-input v-model="msg" placeholder="接下来做什么呢" @keyup.enter.native="addItem"/>
-
-      <!-- <item :todo="todo" class="todo-item"/> -->
-      <item v-for="(todo,index) in filterTodos" :key="index"  :todo="todo" class="todo-item" @del="deleteItem"/>
+      <div>
+        <el-input v-model="msg" placeholder="To do " @keyup.enter.native="addItem" class="todo-input"/>
+        <!-- <img src="@/assets/select.png" class="todo-img"/> -->
+        <!-- <item :todo="todo" class="todo-item"/> -->
+      </div>
+      <item v-for="(todo,index) in getCurrentData" :key="index"  :todo="todo" class="todo-item" 
+        @del="deleteItem" 
+        @edit="editItem"
+        @toggle="toggleItem"
+        @detailed="detailedItem"
+        />     
       
       <!-- 需要传什么： 需要一个未完成item的数量，传进一个数组在里面判断他的completed与否，显示出来
             绑定的事件 切换状态 清楚已经完成
        -->
       <tabs :todos="todos" :filter="filter" class="todo-tabs"
-        @toggle="toggleStatus"
+        @toggleStatus="toggleStatus"
         @clear="clearCompleted"
       />
+      <pages :todos="todos" :currentPage="curPage" @gotoPage="gotoPage"/>
+     
   </div>
 </template>
 
 <script>
-let id = 0
-import Item from './item'
-import Tabs from './tabs'
+let id = 0;
+const STORAGE_KEY = "todos"
+import Item from "./item";
+import Tabs from "./tabs";
+import Pages from "./pages";
+
 export default {
-  name: 'HelloWorld',
-  data () {
+  name: "HelloWorld",
+  data() {
     return {
-      msg: '',
-      todos:[],
-      filter:'all'
-    }
+      msg: "",
+      todos: this.$store.state.todos,
+      filter: "all",
+      pageIndex:1,
+      curTodos:[],
+      curPage:1,
+      maxSize:5
+    };
   },
-  components:{
-    Item,Tabs
+  components: {
+    Item,
+    Tabs,
+    Pages
   },
-  computed:{
-    filterTodos(){
-      // console.log(this.filter)
-      if(this.filter === 'all'){
-        return this.todos
+  computed: {
+    getCurrentData(){
+      // 获取当前页应该的数据 为了防止重复的添加 每次 都把它置空
+      this.curTodos = []
+      for(let i= this.curPage*this.maxSize-this.maxSize;i<this.curPage*this.maxSize;i++){
+        if(this.todos[i]!=null && this.todos[i]!=undefined)
+        this.curTodos.push(this.todos[i])
       }
-      const completed = this.filter === 'completed'
-      return this.todos.filter(todo => completed === todo.completed)
+      // 同时判断是否完成 这里 设计的不太好
+      if (this.filter === "all") {
+        return this.curTodos;
+      }
+      const completed = this.filter === "completed";
+      return this.curTodos.filter(todo => completed === todo.completed);
     }
   },
-  methods:{
-    addItem(){
-      this.todos.unshift({
+  methods: {
+    // filterTodos() { 
+    //   if (this.filter === "all") {
+    //     return this.curTodos;
+    //   }
+    //   const completed = this.filter === "completed";
+    //   return this.curTodos.filter(todo => completed === todo.completed);
+    // },
+    setLocalStorage() {
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(this.todos));
+    },
+    addItem() {
+      const todo = {
         id: id++,
         text: this.msg.trim(),
-        completed:false
-      })
-      this.msg = ''
+        completed: false,
+        time:new Date()
+      }
+      this.todos.unshift(todo);
+      this.setLocalStorage();
+      this.msg = "";
     },
-    deleteItem(id){
-      //  splice 参数 index位置，数量
-      //  console.log(id) 
-      //  id是传回来的 todo 的id的值，我们要根据id找到todo对象，然后删除它
-      //  findIndex 方法 通过判断条件是返回一个符合条件的位置 
-      //      里面的参数是一个判断条件 todo => todo.id === id
-      //        箭头函数
-      //        findIndex 接收一个函数 传入
-      //      ===：用来检测两个操作数是否严格相等，包括类型; ==：会转化成一个相同类型后去判断value是否相等
-      //        这里我们用哪个都行
-      //      
-      this.todos.splice(this.todos.findIndex(function(todo){
-        // console.log(todo.id == id)
-        // 如果 返回的结果是 true 那么findIndex方法会将这个item对应的id返回到外面接受
-        return todo.id == id
-      }),1)
+    deleteItem(id) {
+      this.todos.splice(
+        this.todos.findIndex(function(todo) {
+          return todo.id == id;
+        }),
+        1
+      );
+      this.setLocalStorage();
       // this.todos.splice(this.todos.findIndex(todo => (todo.id === id)),1)
     },
-    toggleStatus(status){
-      this.filter = status
+    toggleStatus(status) {
+      this.filter = status;
     },
-    clearCompleted(){
+    toggleItem(val) {
+      val.done = !val.done;
+      this.setLocalStorage();
+    },
+    clearCompleted() {
       // 清除已经完成的
-      this.todos = this.todos.filter(todo => !todo.completed)
-    } 
+      this.todos = this.todos.filter(todo => !todo.completed);
+      this.setLocalStorage();
+    },
+    editItem({ todo, value }) {
+      todo.text = value;
+      this.setLocalStorage();
+    },
+    gotoPage(pageNum){
+      this.curPage = pageNum
+    },
+    detailedItem(todo){
+      
+      // console.log(todo)
+    }
   }
-}
+};
 </script>
 
 <style >
-.todo-main{
+.todo-main {
   width: 35%;
-  margin:50px auto;
+  margin: 30px auto;
 }
-.todo-item{
-  
+.todo-item {
   height: 40px;
 }
-.todo-tabs{
-  margin:50px auto;
+.todo-tabs {
+  /* margin:50px auto; */
+  margin-top: 50px;
+  margin-bottom: 35px;
+}
+.todo-img{
+  margin-left: 500px;
+  margin-bottom: 0;
+  max-width: 40px;
+  max-height: 40px;
+  /* display: inline */
+}
+.todo-input{
+  display: inline;
 }
 </style>

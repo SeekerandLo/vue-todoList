@@ -1,0 +1,13 @@
+      //  splice 参数 index位置，数量
+      //  console.log(id)
+      //  id是传回来的 todo 的id的值，我们要根据id找到todo对象，然后删除它
+      //  findIndex 方法 通过判断条件是返回一个符合条件的位置
+      //      里面的参数是一个判断条件 todo => todo.id === id
+      //        箭头函数
+      //        findIndex 接收一个函数 传入
+      //      ===：用来检测两个操作数是否严格相等，包括类型; ==：会转化成一个相同类型后去判断value是否相等
+      //        这里我们用哪个都行
+      //
+
+      // console.log(todo.id == id)
+      // 如果 返回的结果是 true 那么findIndex方法会将这个item对应的id返回到外面接受

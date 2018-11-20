@@ -4,15 +4,37 @@
   然后判断todo.completed 如果是true 是显示completed样式，如果不是 不显示其他样式 
     -> 如果是完成状态 就把里面的文字变灰白 然后加一条 删除线
   -->
-  <div :class="['item',todo.completed ? 'completed':'']">
-    <el-checkbox label="完成" border class="item-checkbox" v-model="todo.completed"></el-checkbox>
-    <span class="item-text">{{todo.text}}</span>
-    <el-button type="danger" class="item-delete" @click="deleteItem">删除</el-button>
+  <div :class="['item',todo.completed ? 'completed':'','item-editing']" @dblclick="detailed">
+    <el-checkbox label="ok" border class="item-checkbox" v-model="todo.completed" @change="toggleItem(todo)"></el-checkbox>
+    <span class="item-text" @dblclick="editing = true">{{todo.text}}</span>
+    <el-button type="danger" class="item-delete" @click="deleteItem">del</el-button>
+    <el-input v-model="todo.text" v-show="editing" 
+              class="item-editing" 
+              @keyup.enter.native="doneEdit"/>
+    
   </div>
 </template>
 
 <script>
 export default {
+  data(){
+    return{
+      editing:false
+    }
+  },
+  // directives: {
+  //   focus(el, { value }, { context }) {
+  //     if (value) {
+  //       context.$nextTick(() => {
+  //         el.focus()
+  //       })
+  //     }
+  //   }
+  // },
+  // created(){
+  //     const {todo} = this
+  //     console.log(todo) 
+  // },
   props:{
     // 用 v-bind 传进来的 todo 是一个对象， required 要求 必须传
     todo:{
@@ -21,11 +43,28 @@ export default {
     }
   },
   methods:{
+    toggleItem(todo){
+      this.$emit('toggle',todo)
+    },  
     deleteItem(){
       // this.$emit 事件 绑定到上一层 把具体的逻辑放在todo.vue上 
       // 
       // console.log(this)
       this.$emit("del",this.todo.id)
+    },
+    editItem({todo,value}){
+      this.$emit("edit",{todo,value})
+    },
+    doneEdit(){
+      // todo 是这个item
+      const { todo } = this
+      const value = todo.text
+      this.editItem({todo,value})
+      this.editing = false  
+    },
+    detailed(todo){
+      this.$emit("detailed",todo)
+      // console.log('s')
     }
   }
 }
@@ -35,8 +74,9 @@ export default {
  /* 1.确定整个item的形状 加上阴影 边框 圆角 */
 .item{
   margin: 30px auto;
-  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.027);
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.075);
   padding: 10px;
+  height:40px;
   border: 1px solid #ebeef5;
   background-color: white;
   border-radius: 4px;
@@ -67,5 +107,9 @@ export default {
 .completed .item-text{
   text-decoration: line-through;
   color:rgb(145, 145, 145)
+}
+ /* 7.editing */
+.item-editing{
+   
 }
 </style>
