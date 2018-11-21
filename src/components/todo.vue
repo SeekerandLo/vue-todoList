@@ -6,13 +6,14 @@
         <!-- <img src="@/assets/select.png" class="todo-img"/> -->
         <!-- <item :todo="todo" class="todo-item"/> -->
       </div>
+      <div class="todo-items">
       <item v-for="(todo,index) in getCurrentData" :key="index"  :todo="todo" class="todo-item" 
         @del="deleteItem" 
         @edit="editItem"
         @toggle="toggleItem"
         @detailed="detailedItem"
         />     
-      
+      </div>
       <!-- 需要传什么： 需要一个未完成item的数量，传进一个数组在里面判断他的completed与否，显示出来
             绑定的事件 切换状态 清楚已经完成
        -->
@@ -82,7 +83,9 @@ export default {
         id: id++,
         text: this.msg.trim(),
         completed: false,
-        time:new Date()
+        starTime:new Date(),
+        des:'',
+        endTime:''
       }
       this.todos.unshift(todo);
       this.setLocalStorage();
@@ -118,7 +121,7 @@ export default {
       this.curPage = pageNum
     },
     detailedItem(todo){
-      
+      this.setLocalStorage();
       // console.log(todo)
     }
   }
@@ -132,6 +135,12 @@ export default {
 }
 .todo-item {
   height: 40px;
+}
+.todo-items{
+  height: 420px;
+  width: 100%;
+  margin-top:50px;
+  /* text-align: center */
 }
 .todo-tabs {
   /* margin:50px auto; */

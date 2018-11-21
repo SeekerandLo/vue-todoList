@@ -4,14 +4,27 @@
   然后判断todo.completed 如果是true 是显示completed样式，如果不是 不显示其他样式 
     -> 如果是完成状态 就把里面的文字变灰白 然后加一条 删除线
   -->
-  <div :class="['item',todo.completed ? 'completed':'','item-editing']" @dblclick="detailed">
-    <el-checkbox label="ok" border class="item-checkbox" v-model="todo.completed" @change="toggleItem(todo)"></el-checkbox>
-    <span class="item-text" @dblclick="editing = true">{{todo.text}}</span>
-    <el-button type="danger" class="item-delete" @click="deleteItem">del</el-button>
-    <el-input v-model="todo.text" v-show="editing" 
-              class="item-editing" 
-              @keyup.enter.native="doneEdit"/>
-    
+  <div class="item-main">
+    <div class="item-card" >
+        <div class="item-card-des">
+          <div class="item-card-txt">详细说明:</div>
+          <input v-model="todo.des" class="item-card-input" @keyup.enter="detailed(todo)">
+        </div>
+        <div class="item-card-select">
+          <div class="item-card-txt">完成时间:</div>
+          <el-time-select v-model="todo.endTime" class="item-card-time"></el-time-select>
+        </div>
+    </div>
+
+    <div :class="['item',todo.completed ? 'completed':'','item-editing']"  >
+      <el-checkbox label="ok" border class="item-checkbox" v-model="todo.completed" @change="toggleItem(todo)"/>
+      <span class="item-text" @dblclick="editing = true">{{todo.text}}</span>     
+      <el-button type="danger" class="item-delete" @click="deleteItem">del</el-button>
+      <el-input v-model="todo.text" v-show="editing" 
+                class="item-editing" 
+                @keyup.enter.native="doneEdit"/>  
+    </div>
+
   </div>
 </template>
 
@@ -19,7 +32,9 @@
 export default {
   data(){
     return{
-      editing:false
+      editing:false,
+      // detailed:true
+      des:''
     }
   },
   // directives: {
@@ -44,6 +59,7 @@ export default {
   },
   methods:{
     toggleItem(todo){
+      // console.log(todo)
       this.$emit('toggle',todo)
     },  
     deleteItem(){
@@ -64,23 +80,30 @@ export default {
     },
     detailed(todo){
       this.$emit("detailed",todo)
-      // console.log('s')
     }
   }
 }
 </script>
 
 <style>
+.item-main{
+  position: relative;
+  margin: 50px auto;
+  width: 100%;
+}
  /* 1.确定整个item的形状 加上阴影 边框 圆角 */
 .item{
-  margin: 30px auto;
+  /* margin: 30px auto; */
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.075);
   padding: 10px;
   height:40px;
   border: 1px solid #ebeef5;
   background-color: white;
   border-radius: 4px;
-
+  position: absolute;
+  width: 505px;
+  z-index: 101;
+  /* z-index: 102 */
 }
  /* 2.完成按钮 左浮动 */
 .item-checkbox{
@@ -111,5 +134,69 @@ export default {
  /* 7.editing */
 .item-editing{
    
+}
+.item-card{
+  /* margin-left:50px; */
+  /* margin-top: 70px; */
+  z-index: 100;
+  width: 88%;
+  /* margin:auto auto; */
+  position: absolute;
+  bottom: 0px;
+  left: 50%;
+  height: 30%;
+  /* right: 50%; */
+  margin-left: -48%;
+  border-radius: 4px;
+
+  border: 1px solid #ebeef5;
+  background-color: #fff;
+  color: #303133;
+  /* -webkit-transition: .3s;
+  transition: .3s; */
+  transition: height 2s;
+  -webkit-transition: height 2s;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.075);
+  padding: 20px;
+  /* height: 50px; */
+  overflow: hidden;
+  
+}
+.item-card:hover{
+  /* background-color: #6598ff; */
+  z-index: 102;
+  height:100px;
+}
+
+.item-card-des{
+  margin-bottom: 10px;
+}
+
+.item-card-input{
+  background-color: #fff;
+  border-radius: 4px;
+  border: 1px solid #dcdfe6;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  color: #606266;
+  /* display: inline-block; */
+  font-size: 20px;
+  outline: 0;
+  padding: 5px 15px;
+  float: left;
+  margin-left: 10px;
+}
+.item-card-txt{
+  font-size: 20px;
+  margin-top: 4px;
+  /* display: inline; */
+  float: left;
+}
+.item-card-select{
+  margin-top: 10px;
+  float: left;
+}
+.item-card-time{
+  margin-left: 10px;
 }
 </style>
