@@ -51,6 +51,10 @@ export default {
     Tabs,
     Pages
   },
+  // created(){
+  //   console.log(1)
+  //   this.setLocalStorage()
+  // },
   computed: {
     getCurrentData(){
       // 获取当前页应该的数据 为了防止重复的添加 每次 都把它置空
@@ -76,7 +80,7 @@ export default {
     //   return this.curTodos.filter(todo => completed === todo.completed);
     // },
     setLocalStorage() {
-      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(this.todos));
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(this.todos))
     },
     addItem() {
       const todo = {
@@ -85,7 +89,8 @@ export default {
         completed: false,
         starTime:new Date(),
         des:'',
-        endTime:''
+        endTime:'',
+        level:0
       }
       this.todos.unshift(todo);
       this.setLocalStorage();
@@ -113,8 +118,9 @@ export default {
       this.todos = this.todos.filter(todo => !todo.completed);
       this.setLocalStorage();
     },
-    editItem({ todo, value }) {
-      todo.text = value;
+    editItem(todo) {
+      // todo.text = value;
+      todo = todo
       this.setLocalStorage();
     },
     gotoPage(pageNum){

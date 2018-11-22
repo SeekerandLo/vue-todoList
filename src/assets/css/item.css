@@ -1,0 +1,130 @@
+.item-main{
+  position: relative;
+  margin: 50px auto;
+  width: 100%;
+  /* box-shadow: 0 2px 12px 0 rgba(177, 177, 177, 0.219); */
+}
+ /* 1.确定整个item的形状 加上阴影 边框 圆角 */
+.item{
+  /* margin: 30px auto; */
+  box-shadow: 0 2px 12px 0 rgba(177, 177, 177, 0.075);
+  padding: 10px;
+  height:40px;
+  border: 1px solid #e6e6e6;
+  background-color: white;
+  border-radius: 4px;
+  position: absolute;
+  width: 96%;
+  z-index: 101;
+  /* z-index: 102 */
+}
+ /* 2.完成按钮 左浮动 */
+.item-checkbox{
+  float: left;
+}
+ /* 3.文本左浮动加间距 */
+.item-text{
+  float: left;
+  margin:5.5px 20px;
+
+}
+ /* 4.删除按钮 右浮动 为了美观 我们想让他平时不显，当鼠标划过去的时候才显示。 删除按钮 平时 display:none 添加伪类选择器 */
+.item-delete{
+  float: right;
+  display: none;
+  background-color: rgb(255, 180, 180);
+  color:rgb(255, 73, 73)
+}
+ /* 5.删除按钮 当鼠标移动到 item 上时显示 */
+.item:hover .item-delete{
+  display: block
+}
+ /* 6.添加完成状态的样式 */
+.completed .item-text{
+  text-decoration: line-through;
+  color:rgb(145, 145, 145)
+}
+ /* 7.editing */
+.item-editing{
+   
+}
+.item-card{
+  z-index: 100;
+  width: 88%;
+  position: absolute;
+  bottom: 0px;
+  left: 50%;
+  height: 30%;
+  margin-left: -48%;
+  border-radius: 4px;
+
+  border: 1px solid #bebebe;
+  background-color: #fff;
+  color: #303133;
+  transition: height 2s;
+  -webkit-transition: height 2s;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.075);
+  padding: 20px;
+  overflow: hidden;  
+}
+
+.item-card-level1{
+  /* background-color: #edfcd6; */
+  /* color:#b4e081; */
+  border:1px solid #add47e
+}
+.item-card-level2{
+  /* background-color: #e7fbff; */
+  /* color:#7bc8e4; */
+  border:1px  solid #409EFF;
+  /* color: #a8c5ff */
+}
+.item-card-level3{
+  /* background-color: #ffe7e7; */
+  /* color:#ffb6b6; */
+  border:1px  solid #f56c6c
+}
+
+
+.item-card:hover{
+  /* background-color: #6598ff; */
+  z-index: 102;
+  height:100px;
+}
+
+.item-card-div{
+  margin-bottom: 15px;
+  margin-top: 10px;
+  float: left;
+}
+.item-card-input{
+  background-color: rgba(255, 255, 255, 0.13);
+  border-radius: 4px;
+  border: 1px solid #dfdfdf;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  color: #606266;
+  /* display: inline-block; */
+  font-size: 20px;
+  outline: 0;
+  padding: 5px 15px;
+  float: left;
+  margin-left: 10px;
+}
+.item-card-txt{
+  font-size: 20px;
+  margin-top: 4px;
+  /* display: inline; */
+  float: left;
+}
+
+.item-card-time{
+  margin-left: 10px;
+}
+
+
+.item-card-radio{
+  margin-left:10px;
+  /* margin-top:auto;
+  margin-bottom: auto; */
+}
