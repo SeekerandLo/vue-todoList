@@ -1,6 +1,9 @@
 .item-main{
   position: relative;
-  margin: 50px auto;
+  margin-bottom: 60px;
+  /* margin-top:2px; */
+  margin-left: auto;
+  margin-right: auto;
   width: 100%;
   /* box-shadow: 0 2px 12px 0 rgba(177, 177, 177, 0.219); */
 }

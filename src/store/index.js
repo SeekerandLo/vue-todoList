@@ -2,12 +2,14 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 Vue.use(Vuex)
 const STORAGE_KEY = "todos"
-const todos = []
+var todos = []
 // 我想从localStorge中取数据，如果没有就创建
 if(window.localStorage.todos == undefined){
-  console.log(1)
   window.localStorage.setItem(STORAGE_KEY, JSON.stringify(todos))
+}else{
+  todos = JSON.parse(localStorage.getItem(STORAGE_KEY))
 }
+// console.log(1)
 // completed:false
 // des:""
 // endTime:""

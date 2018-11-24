@@ -19,7 +19,9 @@
 </template>
 
 <script>
+// console.log(this)
 export default {
+  name:'tabs',
   data(){
     return{
       // item 有三种状态

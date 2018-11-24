@@ -45,7 +45,10 @@
 </template>
 
 <script>
+// console.log(this)
+// console.log(this)
 export default {
+  name:'item',
   data(){
     return{
       editing:false,

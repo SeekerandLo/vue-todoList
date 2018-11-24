@@ -25,4 +25,7 @@ export default {
   margin-top: 30px;
   font-size: 22px;
 }
+html, body{
+  margin: 0;
+}
 </style>

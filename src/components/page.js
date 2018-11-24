@@ -1,15 +1,9 @@
-const todos = JSON.parse(window.localStorage.todos);
-
-// console.log(todos)
-const array = []
-export function getArray (){
-    for(let i=todos.length-1;i>=todos.length-5;i--){
-      if(todos[i]!=undefined){
-        array.push(todos[i])
-      }
+export function pagging(array1,array2,curPage,maxSize){
+  // array2 = []
+  for(let j= curPage*maxSize-maxSize;j<curPage*maxSize; j++){
+    if(array1[j]!=null && array1[j]!=undefined){
+      array2.push(array1[j])
     }
-    return array
+  }
+  return array2
 }
-
-// 在这里把他分页
-const temp = []
